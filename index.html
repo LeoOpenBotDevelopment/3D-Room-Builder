@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Room</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+        button {
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            font-size: 16px;
+            top: 10px;
+            left: 10px;
+            border-radius: 5px;
+            background-color: grey;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        #sizeRange1{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 10px;
+            left: 120px;
+        }
+        #sizeRange2{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 10px;
+            left: 240px;
+        }
+        #sizeRange3{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 10px;
+            left: 360px;
+        }
+        #sizeRange4{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 70px;
+            left: 120px;
+        }
+        #sizeRange5{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 70px;
+            left: 240px;
+        }
+        #sizeRange6{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 70px;
+            left: 360px;
+        }
+        #sizeRange7{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 130px;
+            left: 120px;
+        }
+        #sizeRange8{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 130px;
+            left: 240px;
+        }
+        #sizeRange9{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 130px;
+            left: 360px;
+        }
+        #sizeRange10{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 190px;
+            left: 120px;
+        }
+        #sizeRange11{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 190px;
+            left: 240px;
+        }
+        #sizeRange12{
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            top: 190px;
+            left: 360px;
+        }
+        #addchair {
+            position: absolute;
+            top: 70px;
+        }
+        #addtable {
+            position: absolute;
+            top: 130px;
+        }
+        #addbed {
+            position: absolute;
+            top: 190px;
+        }
+        /*.allchairs {
+            position: absolute;
+            flex: 1;
+            overflow-y: auto;
+            height: 500px;
+        }
+        .allwalls {
+            position: absolute;
+            flex: 1;
+            overflow-y: auto;
+            height: 500px;
+            
+        }*/
+        #wall1 {
+            position: absolute;
+            top: 250px;
+        }
+        #chair1 {
+            position: absolute;
+            top: 190px;
+        }
+        #flipwall{
+            position: absolute;
+            left: 500px;
+        }
+        #flipchair{
+            position: absolute;
+            left: 500px;
+            top: 70px;
+        }
+        #fliptable{
+            position: absolute;
+            left: 500px;
+            top: 130px;
+        }
+        #flipbed{
+            position: absolute;
+            left: 500px;
+            top: 190px;
+        }
+        #walldeleteButton{
+            position: absolute;
+            left: 670px;
+        }
+        #chairdeleteButton{
+            position: absolute;
+            left: 670px;
+            top: 70px;
+        }
+        #tabledeleteButton{
+            position: absolute;
+            left: 670px;
+            top: 130px;
+        }
+        #beddeleteButton{
+            position: absolute;
+            left: 670px;
+            top: 190px;
+        }
+        .chaircontrols{
+            display: none;
+        }
+        .tablecontrols{
+            display: none;
+        }
+        .bedcontrols{
+            display: none;
+        }
+        img{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            height: 30px;
+            width: 30px;
+            background-size: cover;
+            border-radius: 50%;
+            border: 2px solid black;
+        }
+        #wallcolor1{
+            border: 2px solid red;
+        }
+        #wallcolor2{
+            position: absolute;
+            top: 50px;
+        }
+        #wallcolor3{
+            position: absolute;
+            top: 90px;
+        }
+        #wallcolor4{
+            position: absolute;
+            top: 130px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="wallcontrols">
+      <input type="range" min="-50" max="50" value="0" id="sizeRange1">
+      <input type="range" min="0" max="10" value="1" id="sizeRange2">
+      <input type="range" min="-50" max="50" value="-5" id="sizeRange3">
+      <button id="flipwall">flip</button>
+      <button id="walldeleteButton">delete</button>
+    </div>
+    <div class="chaircontrols">
+      <input type="range" min="-50" max="50" value="0" id="sizeRange4">
+      <input type="range" min="0" max="10" value="1" id="sizeRange5">
+      <input type="range" min="-50" max="50" value="-5" id="sizeRange6">
+      <button id="flipchair">flip</button>
+      <button id="chairdeleteButton">delete</button>
+    </div>
+    <div class="tablecontrols">
+      <input type="range" min="-50" max="50" value="0" id="sizeRange7">
+      <input type="range" min="0" max="10" value="1" id="sizeRange8">
+      <input type="range" min="-50" max="50" value="-5" id="sizeRange9">
+      <button id="fliptable">flip</button>
+      <button id="tabledeleteButton">delete</button>
+    </div>
+    <div class="bedcontrols">
+      <input type="range" min="-50" max="50" value="0" id="sizeRange10">
+      <input type="range" min="0" max="10" value="1" id="sizeRange11">
+      <input type="range" min="-50" max="50" value="-5" id="sizeRange12">
+      <button id="flipbed">flip</button>
+      <button id="beddeleteButton">delete</button>
+    </div>
+    <button id="addwall">add wall</button>
+    <button id="addchair">add chair</button>
+    <button id="addtable">add table</button>
+    <button id="addbed">add bed</button>
+    <img src="Whitewall.png" id="wallcolor1">
+    <img src="Bluewall.png" id="wallcolor2">
+    <img src="Woodwall.png" id="wallcolor3">
+    <img src="Zementwall.png" id="wallcolor4">
+    <div class="allwalls">
+        <button id="wall1">wall1</button>
+    </div>
+    <div class="allchairs">
+        <!--<button id="chair1">chair1</button>-->
+    </div>
+    <div class="alltables">
+        <!--<button id="chair1">table1</button>-->
+    </div>
+    <div class="allbeds">
+        <!--<button id="chair1">table1</button>-->
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        /*var light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(0, 10, 0); // Position der Lichtquelle einstellen
+        light.castShadow = true; // Schatten aktivieren
+        scene.add(light);*/
+
+        
+        // Setup der Szene, Kamera und Renderer
+        let backgroundimg1 = "Whitewall.png";
+
+        let wallcolor1 = document.getElementById("wallcolor1");
+        let wallcolor2 = document.getElementById("wallcolor2");
+        let wallcolor3 = document.getElementById("wallcolor3");
+        let wallcolor4 = document.getElementById("wallcolor4");
+
+        wallcolor1.addEventListener("click", function() {
+            wallcolor1.style.border = "2px solid red";
+            wallcolor2.style.border = "2px solid black";
+            wallcolor3.style.border = "2px solid black";
+            wallcolor4.style.border = "2px solid black";
+            backgroundimg1 = "Whitewall.png";
+        });
+
+        wallcolor2.addEventListener("click", function() {
+            wallcolor1.style.border = "2px solid black";
+            wallcolor2.style.border = "2px solid red";
+            wallcolor3.style.border = "2px solid black";
+            wallcolor4.style.border = "2px solid black";
+            backgroundimg1 = "Bluewall.png";
+        });
+
+        wallcolor3.addEventListener("click", function() {
+            wallcolor1.style.border = "2px solid black";
+            wallcolor2.style.border = "2px solid black";
+            wallcolor3.style.border = "2px solid red";
+            wallcolor4.style.border = "2px solid black";
+            backgroundimg1 = "Woodwall.png";
+        });
+
+        wallcolor4.addEventListener("click", function() {
+            wallcolor1.style.border = "2px solid red";
+            wallcolor2.style.border = "2px solid black";
+            wallcolor3.style.border = "2px solid black";
+            wallcolor4.style.border = "2px solid red";
+            backgroundimg1 = "Zementwall.png";
+        });
+        
+        let Eheight = 10;
+        let Ewidth = 10;
+        let wallNum = "1";
+        let chairNum = "0";
+        let left_richt = 0;
+        let top_bottom = 5;
+        let back_front = -5;
+        let scaleX = 10;
+        let addwall = document.getElementById("addwall");
+        let wallbutton1 = document.getElementById("wall1");
+        let addchair = document.getElementById("addchair");
+        let addtable = document.getElementById("addtable");
+        let allchairs = document.querySelector(".allchairs");
+        let selectedTable = null;
+        let tableNum = 0;
+        let selectedBed = null;
+        let bedNum = 0;
+
+        let sizeRange1 = document.getElementById("sizeRange1");
+        let sizeRange2 = document.getElementById("sizeRange2");
+        let sizeRange3 = document.getElementById("sizeRange3");
+        let sizeRange4 = document.getElementById("sizeRange4");
+        let sizeRange5 = document.getElementById("sizeRange5");
+        let sizeRange6 = document.getElementById("sizeRange6");
+        let sizeRange7 = document.getElementById("sizeRange7");
+        let sizeRange8 = document.getElementById("sizeRange8");
+        let sizeRange9 = document.getElementById("sizeRange9");
+        let sizeRange10 = document.getElementById("sizeRange10");
+        let sizeRange11 = document.getElementById("sizeRange11");
+        let sizeRange12 = document.getElementById("sizeRange12");
+        let wallcontrols = document.querySelector(".wallcontrols");
+        let chaircontrols = document.querySelector(".chaircontrols");
+        let tablecontrols = document.querySelector(".tablecontrols");
+        let bedcontrols = document.querySelector(".bedcontrols");
+
+        //const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x93e3fd); // Hellblau (Hex-Wert)
+        renderer.shadowMap.enabled = true; // Aktiviere Schatten
+        document.body.appendChild(renderer.domElement);
+
+        const floorGeometry = new THREE.PlaneGeometry(100, 100);
+        const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x808080, side: THREE.DoubleSide });
+        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.rotation.x = -Math.PI / 2;
+        floor.receiveShadow = true; // Boden empfängt Schatten
+        //floor.castShadow = true;
+        scene.add(floor);
+
+        /*light.shadow.mapSize.width = 1024;
+        light.shadow.mapSize.height = 1024;
+        light.shadow.camera.near = 0.5;
+        light.shadow.camera.far = 15; // Entfernung der Schattenkamera erhöhen, um den gesamten Boden abzudecken
+        light.shadow.bias = -0.001;*/
+
+        // Wände mit Schatten und Tiefe
+        const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xbbbcba, side: THREE.DoubleSide });
+
+        const textureLoader = new THREE.TextureLoader();
+
+        const walls = [];
+
+        // -|+
+
+        // || |_| {_}[1]
+        //const wallTexture1 = textureLoader.load('Ay_ilurp_processed.jpg');
+        /*let wallTexture1 = textureLoader.load(backgroundimg1, (texture) => {
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
+            texture.repeat.set(1, 1);
+        });
+        let wallMaterial1 = new THREE.MeshStandardMaterial({ map: wallTexture1 });
+        let wall1 = new THREE.Mesh(new THREE.BoxGeometry(Ewidth, Eheight, 0.5), wallMaterial1);
+        wall1.position.set(left_richt, top_bottom, back_front);
+        wall1.receiveShadow = true;
+        scene.add(wall1);
+        walls.push(wall1);
+        function allwalls() {
+            wallTexture1 = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
+                texture.repeat.set(1, 1);
+            });
+            wallMaterial1 = new THREE.MeshStandardMaterial({ map: wallTexture1 });
+            wall1 = new THREE.Mesh(new THREE.BoxGeometry(Ewidth, Eheight, 0.5), wallMaterial1);
+            wall1.position.set(left_richt, top_bottom, back_front);
+            wall1.receiveShadow = true;
+            scene.add(wall1);
+            walls.push(wall1);
+        }*/
+        let wall1; // Variable für die Wand
+        let selectedElement = null;
+        let selectedChair = null;
+        let topm = 250;
+        let wall1element;
+        /*function createWall() {
+            const wallTexture = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
+
+            const wallMaterial = new THREE.MeshStandardMaterial({ map: wallTexture });
+            const wall = new THREE.Mesh(new THREE.BoxGeometry(Ewidth, Eheight, 0.5), wallMaterial);
+            wall.position.set(left_richt, top_bottom, back_front);
+            wall.receiveShadow = true;
+            wall.castShadow = true;
+            wallNum = parseInt(wallNum) + 1;
+            wall.name = "wall" + wallNum;
+            scene.add(wall);
+            walls.push(wall);
+            // create element button
+            const button = document.createElement("button");
+            button.textContent = wall.name;
+            button.style.position = "absolute";
+            button.style.top = `${topm + 60}px`;
+            let body = document.querySelector(".allwalls");
+            button.id = wall.name;
+            body.appendChild(button);
+            createdbutton = document.getElementById(wall.name);
+            createdbutton.addEventListner("click", () => {
+                selectedElement = wall;
+            });
+            selectedElement = wall;
+        }*/
+        let wallgroupname = "wall1";
+        function createWall() {
+            const wallTexture = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
+
+            const wallMaterial = new THREE.MeshStandardMaterial({ map: wallTexture });
+            //wallMaterial1.castShadow = true;
+            const wall = new THREE.Mesh(new THREE.BoxGeometry(Ewidth, Eheight, 0.5), wallMaterial);
+            wall.position.set(left_richt, top_bottom, back_front);
+            wall.receiveShadow = true;
+            wall.castShadow = true;
+            wallNum = parseInt(wallNum) + 1;
+            wall.name = "wall" + wallNum;
+            scene.add(wall);
+            walls.push(wall);
+
+            // Create element button
+            const button = document.createElement("button");
+            button.textContent = wall.name;
+            button.style.position = "absolute";
+            button.style.top = `${topm + 60}px`;
+            topm = topm + 60;
+            let body = document.querySelector(".allwalls");
+            button.id = wall.name;
+            wallgroupname = wall.name;
+            body.appendChild(button);
+
+            // Add event listener to the button
+            button.addEventListener("click", () => {
+                chaircontrols.style.display = "none";
+                tablecontrols.style.display = "none";
+                wallcontrols.style.display = "block";
+                selectedElement = wall;
+            });
+            /*wallbutton1.addEventListener("click", () => {
+                chaircontrols.style.display = "none";
+                tablecontrols.style.display = "none";
+                wallcontrols.style.display = "block";
+                selectedElement = wall1element;
+                sizeRange1.value = wall1element.position.x;
+                //sizeRange2 is the walls width
+                sizeRange2.value = wall1element.geometry.parameters.width;
+                //sizeRange3 is the walls y position
+                sizeRange3.value = wall1element.position.y;
+            });*/
+
+            selectedElement = wall;
+        }
+        wallbutton1.addEventListener("click", () => {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "block";
+            selectedElement = wall1element;
+            /*sizeRange1.value = wall1element.position.x;
+            //sizeRange2 is the walls width
+            sizeRange2.value = wall1element.geometry.parameters.width;
+            //sizeRange3 is the walls y position
+            sizeRange3.value = wall1element.position.y;*/
+        });
+        addchair.addEventListener("click", () => {
+            chaircontrols.style.display = "block";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            createChair();
+        });
+        flipwall.addEventListener("click", () => {
+            if (selectedElement){
+                if (selectedElement.rotation.y == 0){
+                    selectedElement.rotation.y = Math.PI / 2;
+                }else {
+                    selectedElement.rotation.y = 0;
+                }
+            }
+        });
+
+        function removeWall() {
+            if (selectedElement.length > 0) {
+                const selectedElement = walls.pop();
+                scene.remove(wall);
+                wall.geometry.dispose();
+                wall.material.dispose();
+            }
+        }
+        
+        function allwalls() {
+            // Lade die Textur und aktualisiere die Wandmaterialien
+            const wallTexture1 = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
+
+            if (selectedElement) {
+                // Aktualisiere die Textur und Position der vorhandenen Wand
+                selectedElement.material.map = wallTexture1;
+                selectedElement.material.needsUpdate = true;
+                selectedElement.position.set(left_richt, top_bottom, back_front);
+                selectedElement.castShadow = true;
+                selectedElement.scale.x = scaleX;
+                
+            } else {
+                // Erstelle die Wand nur einmal
+                const wallMaterial1 = new THREE.MeshStandardMaterial({ map: wallTexture1 });
+                //wallMaterial1.castShadow = true;
+                wall1 = new THREE.Mesh(new THREE.BoxGeometry(Ewidth, Eheight, 0.5), wallMaterial1);
+                wall1.position.set(left_richt, top_bottom, back_front);
+                wall1.receiveShadow = true;
+                wall1.castShadow = true;
+                scene.add(wall1);
+                selectedElement = wall1;
+                wall1element = wall1;
+            }
+        }
+        const chairs = [];
+
+        function moveSelectedChair() {
+            let sizeRangex = parseFloat(sizeRange4.value);
+            let sizeRangey = parseFloat(sizeRange5.value);
+            let sizeRangez = parseFloat(sizeRange6.value);
+            if (selectedChair) {
+                selectedChair.position.set(sizeRangex, sizeRangey, sizeRangez);
+            }
+        }
+
+        let chairgroupname;
+        function createChair() {
+            const chairGroup = new THREE.Group();
+
+            // Sitzfläche
+            const seatGeometry = new THREE.BoxGeometry(2, 0.5, 2);
+            const seatMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+            const seat = new THREE.Mesh(seatGeometry, seatMaterial);
+            seat.position.set(0, 1, 0);
+            seat.castShadow = true;
+            chairGroup.add(seat);
+
+            // Rückenlehne
+            const backrestGeometry = new THREE.BoxGeometry(2, 2, 0.5);
+            const backrest = new THREE.Mesh(backrestGeometry, seatMaterial);
+            backrest.position.set(0, 2.25, -0.75);
+            backrest.castShadow = true;
+            chairGroup.add(backrest);
+
+            // Beine
+            const legGeometry = new THREE.BoxGeometry(0.2, 1, 0.2);
+            for (let i = -1; i <= 1; i += 2) {
+                for (let j = -1; j <= 1; j += 2) {
+                    const leg = new THREE.Mesh(legGeometry, seatMaterial);
+                    leg.position.set(i * 0.8, 0.5, j * 0.8);
+                    leg.castShadow = true;
+                    chairGroup.add(leg);
+                }
+            }
+
+            chairGroup.name = "chair" + (parseInt(chairNum) + 1);
+
+            const button = document.createElement("button");
+            button.textContent = chairGroup.name;
+            button.style.position = "absolute";
+            button.style.top = `${topm + 60}px`;
+            topm += 60;
+            let body = document.querySelector(".allchairs");
+            button.id = chairGroup.name;
+            chairgroupname = chairGroup.name;
+            body.appendChild(button);
+
+            button.addEventListener("click", () => {
+                chaircontrols.style.display = "block";
+                tablecontrols.style.display = "none";
+                wallcontrols.style.display = "none";
+                selectedChair = chairGroup;
+            });
+            selectedChair = chairGroup;
+
+            scene.add(chairGroup);
+            chairs.push(chairGroup);
+            chairNum++;
+        }
+        /* table start */
+        function rotateChair() {
+            if (selectedChair) {
+                if (selectedChair.rotation.y == 0){
+                    selectedChair.rotation.y += Math.PI / 1;
+                }else if (selectedChair.rotation.y == Math.PI / 1){
+                    selectedChair.rotation.y += Math.PI / 2;
+                }else if (selectedChair.rotation.y == Math.PI / 2){
+                    selectedChair.rotation.y += Math.PI / 3;
+                }else if (selectedChair.rotation.y == Math.PI / 3){
+                    selectedChair.rotation.y += Math.PI / 4;
+                }else {
+                    selectedChair.rotation.y = 0;
+                }
+            }
+        }
+        const tables = [];
+
+        function moveSelectedTable() {
+            let sizeRangex = parseFloat(sizeRange7.value);
+            let sizeRangey = parseFloat(sizeRange8.value);
+            let sizeRangez = parseFloat(sizeRange9.value);
+            if (selectedTable) {
+                selectedTable.position.set(sizeRangex, sizeRangey, sizeRangez);
+            }
+        }
+
+        let tablegroupname;
+        function createTable() {
+            const tableGroup = new THREE.Group();
+
+            // Tischplatte
+            const tabletopGeometry = new THREE.BoxGeometry(4, 0.2, 2);
+            const tabletopMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+            const tabletop = new THREE.Mesh(tabletopGeometry, tabletopMaterial);
+            tabletop.position.set(0, 2, 0);
+            tabletop.castShadow = true;
+            tableGroup.add(tabletop);
+
+            // Tischbeine
+            const legGeometry = new THREE.BoxGeometry(0.2, 2, 0.2);
+            for (let i = -1; i <= 1; i += 2) {
+                for (let j = -1; j <= 1; j += 2) {
+                    const leg = new THREE.Mesh(legGeometry, tabletopMaterial);
+                    leg.position.set(i * 1.8, 1, j * 0.8);
+                    leg.castShadow = true;
+                    tableGroup.add(leg);
+                }
+            }
+
+            tableGroup.name = "table" + (parseInt(tableNum) + 1);
+
+            const button = document.createElement("button");
+            button.textContent = tableGroup.name;
+            button.style.position = "absolute";
+            button.style.top = `${topm + 60}px`;
+            topm += 60;
+            let body = document.querySelector(".alltables");
+            button.id = tableGroup.name;
+            tablegroupname = tableGroup.name;
+            body.appendChild(button);
+            button.addEventListener("click", () => {
+                chaircontrols.style.display = "none";
+                tablecontrols.style.display = "block";
+                wallcontrols.style.display = "none";
+                selectedTable = tableGroup;
+            });
+            selectedTable = tableGroup;
+            scene.add(tableGroup);
+            tables.push(tableGroup);
+            tableNum++;
+        }
+        function rotateTable() {
+            if (selectedTable) {
+                if (selectedTable.rotation.y == 0){
+                    selectedTable.rotation.y += Math.PI / 2;
+                }else {
+                    selectedTable.rotation.y = 0;
+                }
+            }
+        }
+        addtable.addEventListener("click", () => {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "block";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            createTable();
+        });
+        /* bed start */
+        const beds = [];
+
+        function moveSelectedBed() {
+            let sizeRangex = parseFloat(sizeRange10.value);
+            let sizeRangey = parseFloat(sizeRange11.value);
+            let sizeRangez = parseFloat(sizeRange12.value);
+            if (selectedBed) {
+                selectedBed.position.set(sizeRangex, sizeRangey, sizeRangez);
+            }
+        }
+
+        function rotateBed() {
+            if (selectedBed) {
+                if (selectedBed.rotation.y == 0){
+                    selectedBed.rotation.y += Math.PI / 1;
+                }else if (selectedBed.rotation.y == Math.PI / 1){
+                    selectedBed.rotation.y += Math.PI / 2;
+                }else if (selectedBed.rotation.y == Math.PI / 2){
+                    selectedBed.rotation.y += Math.PI / 3;
+                }else if (selectedBed.rotation.y == Math.PI / 3){
+                    selectedBed.rotation.y += Math.PI / 4;
+                }else {
+                    selectedBed.rotation.y = 0;
+                }
+            }
+        }
+        let bedgroupname;
+        function createBed() {
+            const bedGroup = new THREE.Group();
+
+            // Bettgestell
+            const frameGeometry = new THREE.BoxGeometry(4.5, 0.5, 4.0);
+            const frameMaterial = new THREE.MeshStandardMaterial({ color: 0x6e501e });
+            const frame = new THREE.Mesh(frameGeometry, frameMaterial);
+            frame.position.set(0, 0.75, 0);
+            frame.castShadow = true;
+            bedGroup.add(frame);
+
+            // Kopfteil
+            const headboardGeometry = new THREE.BoxGeometry(4.5, 1.5, 0.2);
+            const headboard = new THREE.Mesh(headboardGeometry, frameMaterial);
+            headboard.position.set(0, 1.2, -1.9);
+            headboard.castShadow = true;
+            bedGroup.add(headboard);
+
+            // Matratze
+            const mattressGeometry = new THREE.BoxGeometry(3.9, 0.3, 3.5); //1.8
+            const mattressMaterial = new THREE.MeshStandardMaterial({ color: 0xfffafa });
+            const mattress = new THREE.Mesh(mattressGeometry, mattressMaterial);
+            mattress.position.set(0, 1.1, 0);
+            mattress.castShadow = true;
+            bedGroup.add(mattress);
+
+            // Beine
+            const legGeometry = new THREE.BoxGeometry(0.2, 1, 0.2);
+            for (let i = -1; i <= 1; i += 2) {
+                for (let j = -1; j <= 1; j += 2) {
+                    const leg = new THREE.Mesh(legGeometry, frameMaterial);
+                    leg.position.set(i * 2.3, 0.5, j * 1.5); // 0.8
+                    leg.castShadow = true;
+                    bedGroup.add(leg);
+                }
+            }
+
+            bedGroup.name = "bed" + (parseInt(bedNum) + 1);
+
+            const button = document.createElement("button");
+            button.textContent = bedGroup.name;
+            button.style.position = "absolute";
+            button.style.top = `${topm + 60}px`;
+            topm += 60;
+            let body = document.querySelector(".allbeds");
+            button.id = bedGroup.name;
+            body.appendChild(button);
+            bedgroupname = bedGroup.name;
+
+            button.addEventListener("click", () => {
+                chaircontrols.style.display = "none";
+                tablecontrols.style.display = "none";
+                wallcontrols.style.display = "none";
+                bedcontrols.style.display = "block";
+                selectedBed = bedGroup;
+            });
+            selectedBed = bedGroup;
+            scene.add(bedGroup);
+            beds.push(bedGroup);
+            bedNum++;
+        }
+        const walldeleteButton = document.getElementById('walldeleteButton');
+        walldeleteButton.addEventListener("click", () => {
+            if (selectedElement) {
+                // Entferne das Bett aus der Szene
+                scene.remove(selectedElement);
+
+                let bgn = document.getElementById(wallgroupname);
+                // if the bgn has an eventlistener remove it
+                bgn.removeEventListener("click", () => {
+                    chaircontrols.style.display = "none";
+                    tablecontrols.style.display = "none";
+                    wallcontrols.style.display = "block";
+                    selectedElement = wall;
+                });
+                bgn.remove();
+
+
+                // Optional: Speicherbereinigungen vornehmen
+                /*selectedBed.geometry.dispose();
+                selectedBed.material.dispose();*/
+
+                // Entferne das Bett aus dem Speicher
+                selectedElement = null;
+            }
+        });
+        const tabledeleteButton = document.getElementById('tabledeleteButton');
+        tabledeleteButton.addEventListener("click", () => {
+            if (selectedTable) {
+                // Entferne das Bett aus der Szene
+                scene.remove(selectedTable);
+
+                let bgn = document.getElementById(tablegroupname);
+                bgn.removeEventListener("click", () => {
+                    chaircontrols.style.display = "none";
+                    tablecontrols.style.display = "block";
+                    wallcontrols.style.display = "none";
+                    selectedTable = tableGroup;
+                });
+                bgn.remove();
+
+
+                // Optional: Speicherbereinigungen vornehmen
+                /*selectedBed.geometry.dispose();
+                selectedBed.material.dispose();*/
+
+                // Entferne das Bett aus dem Speicher
+                selectedTable= null;
+            }
+        });
+        const chairdeleteButton = document.getElementById('chairdeleteButton');
+        chairdeleteButton.addEventListener("click", () => {
+            if (selectedChair) {
+                // Entferne das Bett aus der Szene
+                scene.remove(selectedChair);
+
+                let bgn = document.getElementById(chairgroupname);
+                bgn.removeEventListener("click", () => {
+                    chaircontrols.style.display = "block";
+                    tablecontrols.style.display = "none";
+                    wallcontrols.style.display = "none";
+                    selectedChair = chairGroup;
+                });
+                bgn.remove();
+
+
+                // Optional: Speicherbereinigungen vornehmen
+                /*selectedBed.geometry.dispose();
+                selectedBed.material.dispose();*/
+
+                // Entferne das Bett aus dem Speicher
+                selectedChair = null;
+            }
+        });
+        const beddeleteButton = document.getElementById('beddeleteButton');
+        beddeleteButton.addEventListener("click", () => {
+            if (selectedBed) {
+                // Entferne das Bett aus der Szene
+                scene.remove(selectedBed);
+
+                let bgn = document.getElementById(bedgroupname);
+                bgn.removeEventListener("click", () => {
+                    chaircontrols.style.display = "none";
+                    tablecontrols.style.display = "none";
+                    wallcontrols.style.display = "none";
+                    bedcontrols.style.display = "block";
+                    selectedBed = bedGroup;
+                });
+                bgn.remove();
+                
+
+                // Optional: Speicherbereinigungen vornehmen
+                /*selectedBed.geometry.dispose();
+                selectedBed.material.dispose();*/
+
+                // Entferne das Bett aus dem Speicher
+                selectedBed = null;
+            }
+        });
+
+        addbed.addEventListener("click", () => {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "block";
+            createBed();
+        });
+
+        document.getElementById("flipbed").addEventListener("click", () => {
+            rotateBed();
+        });
+
+        sizeRange10.addEventListener("input", function() {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "block";
+            moveSelectedBed();
+        });
+
+        sizeRange11.addEventListener("input", function() {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "block";
+            moveSelectedBed();
+        });
+
+        sizeRange12.addEventListener("input", function() {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "block";
+            moveSelectedBed();
+        });
+
+        // Beispielhafter Button zum Drehen des Bettes
+        /* bed end */
+        document.getElementById("fliptable").addEventListener("click", () => {
+            rotateTable();
+        });
+        document.getElementById("flipchair").addEventListener("click", () => {
+            rotateChair();
+        });
+
+        sizeRange7.addEventListener("input", function() {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "block";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            moveSelectedTable();
+        });
+
+        sizeRange8.addEventListener("input", function() {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "block";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            moveSelectedTable();
+        });
+
+        sizeRange9.addEventListener("input", function() {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "block";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            moveSelectedTable();
+        });
+        /* table end */
+
+        sizeRange4.addEventListener("input", function() {
+            chaircontrols.style.display = "block";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            moveSelectedChair();
+        });
+
+        sizeRange5.addEventListener("input", function() {
+            chaircontrols.style.display = "block";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            moveSelectedChair();
+        });
+
+        sizeRange6.addEventListener("input", function() {
+            chaircontrols.style.display = "block";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "none";
+            bedcontrols.style.display = "none";
+            moveSelectedChair();
+        });
+
+        allwalls();
+        addwall.addEventListener("click", () => {
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "block";
+            bedcontrols.style.display = "none";
+            createWall();
+        });
+        sizeRange1.addEventListener("input", function() {
+            left_richt = sizeRange1.value;
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "block";
+            bedcontrols.style.display = "none";
+            allwalls();
+        });
+        sizeRange2.addEventListener("input", function() {
+            Ewidth = sizeRange2.value;
+            scaleX = sizeRange2.value;
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "block";
+            bedcontrols.style.display = "none";
+            allwalls();
+        });
+        sizeRange3.addEventListener("input", function() {
+            back_front = sizeRange3.value;
+            chaircontrols.style.display = "none";
+            tablecontrols.style.display = "none";
+            wallcontrols.style.display = "block";
+            bedcontrols.style.display = "none";
+            allwalls();
+        });
+        //const chairGroup = new THREE.Group();
+
+        // Sitzfläche
+        /*const seatGeometry = new THREE.BoxGeometry(2, 0.5, 2);
+        const seatMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+        const seat = new THREE.Mesh(seatGeometry, seatMaterial);
+        seat.position.set(0, 1, 0);
+        seat.castShadow = true;
+        chairGroup.add(seat);
+
+        // Rückenlehne
+        const backrestGeometry = new THREE.BoxGeometry(2, 2, 0.5);
+        const backrest = new THREE.Mesh(backrestGeometry, seatMaterial);
+        backrest.position.set(0, 2.25, -0.75);
+        backrest.castShadow = true;
+        chairGroup.add(backrest);
+
+        // Beine
+        const legGeometry = new THREE.BoxGeometry(0.2, 1, 0.2);
+        for (let i = -1; i <= 1; i += 2) {
+            for (let j = -1; j <= 1; j += 2) {
+                const leg = new THREE.Mesh(legGeometry, seatMaterial);
+                leg.position.set(i * 0.8, 0.5, j * 0.8);
+                leg.castShadow = true;
+                chairGroup.add(leg);
+            }
+        }
+        scene.add(chairGroup);*/
+
+        /*// || |_| | {|}[5]
+        const wallTexture2 = textureLoader.load(backgroundimg2, (texture) => {
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
+            texture.repeat.set(1, 1);
+        });
+        const wallMaterial2 = new THREE.MeshStandardMaterial({ map: wallTexture2 });
+        const wall2 = new THREE.Mesh(new THREE.BoxGeometry(20, 10, 0.5), wallMaterial2);
+        wall2.position.set(10, 5, 0);
+        wall2.rotation.y = Math.PI / 2;
+        wall2.receiveShadow = true;
+        scene.add(wall2);
+        walls.push(wall2);
+
+
+        // || |_| {|}[2]
+        const wallTexture3 = textureLoader.load(backgroundimg3, (texture) => {
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
+            texture.repeat.set(1, 1);
+        });
+        const wallMaterial3 = new THREE.MeshStandardMaterial({ map: wallTexture3 });
+        const wall3 = new THREE.Mesh(new THREE.BoxGeometry(20, 10, 0.5), wallMaterial3);
+        wall3.position.set(-10, 5, 0);
+        wall3.rotation.y = Math.PI / 2;
+        wall3.receiveShadow = true;
+        scene.add(wall3);
+        walls.push(wall3);
+
+        // ||- |_| {-}
+        const wallTexture4 = textureLoader.load(backgroundimg4, (texture) => {
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
+            texture.repeat.set(1, 1);
+        });
+        const wallMaterial4 = new THREE.MeshStandardMaterial({ map: wallTexture4 });
+        const wall4 = new THREE.Mesh(new THREE.BoxGeometry(5, 10, 0.5), wallMaterial4);
+        wall4.position.set(-7.5, 5, 5);
+        wall4.rotation.y = Math.PI;
+        wall4.receiveShadow = true;
+        scene.add(wall4);
+        walls.push(wall4);
+
+        // || |_| -| {-}
+        const wallTexture5 = textureLoader.load(backgroundimg5, (texture) => {
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
+            texture.repeat.set(1, 1);
+        });
+        const wallMaterial5 = new THREE.MeshStandardMaterial({ map: wallTexture5 });
+        const wall5 = new THREE.Mesh(new THREE.BoxGeometry(5, 10, 0.5), wallMaterial5);
+        wall5.position.set(7.5, 5, 0);
+        wall5.rotation.y = Math.PI;
+        wall5.receiveShadow = true;
+        scene.add(wall5);
+        walls.push(wall5);
+
+        // || |_| -|- {-}[2]
+        const wallTexture6 = textureLoader.load(backgroundimg6, (texture) => {
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
+            texture.repeat.set(1, 1);
+        });
+        const wallMaterial6 = new THREE.MeshStandardMaterial({ map: wallTexture6 });
+        const wall6 = new THREE.Mesh(new THREE.BoxGeometry(10, 10, 0.5), wallMaterial6);
+        wall6.position.set(15, 5, 0);
+        wall6.rotation.y = Math.PI;
+        wall6.receiveShadow = true;
+        scene.add(wall6);
+        walls.push(wall6);
+
+
+        // || |_| {|}[4]
+        const wallTexture7 = textureLoader.load(backgroundimg7, (texture) => {
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
+            texture.repeat.set(1, 1);
+        });
+        const wallMaterial7 = new THREE.MeshStandardMaterial({ map: wallTexture7 });
+        const wall7 = new THREE.Mesh(new THREE.BoxGeometry(10, 10, 0.5), wallMaterial7);
+        wall7.position.set(2.5, 5, -10);
+        wall7.rotation.y = Math.PI / 2;
+        wall7.receiveShadow = true;
+        scene.add(wall7);
+        walls.push(wall7);
+
+
+        // || |_| {|}[3]
+        const wallTexture8 = textureLoader.load(backgroundimg8, (texture) => {
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
+            texture.repeat.set(1, 1);
+        });
+        const wallMaterial8 = new THREE.MeshStandardMaterial({ map: wallTexture8 });
+        const wall8 = new THREE.Mesh(new THREE.BoxGeometry(10, 10, 0.5), wallMaterial8);
+        wall8.position.set(-2.5, 5, -10);
+        wall8.rotation.y = Math.PI / 2;
+        wall8.receiveShadow = true;
+        scene.add(wall8);
+        walls.push(wall8);
+
+        // |^| {^}
+        const wallTexture9 = textureLoader.load(backgroundimg9, (texture) => {
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
+            texture.repeat.set(1, 1);
+        });
+        const wallMaterial9 = new THREE.MeshStandardMaterial({ map: wallTexture9 });
+        const wall9 = new THREE.Mesh(new THREE.BoxGeometry(40, 10, 0.5), wallMaterial9);
+        wall9.position.set(0, 5, -15);
+        wall9.receiveShadow = true;
+        scene.add(wall9);
+        walls.push(wall9);
+
+        // | | |_| {|}[1]
+        const wallTexture10 = textureLoader.load(backgroundimg10, (texture) => {
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
+            texture.repeat.set(1, 1);
+        });
+        const wallMaterial10 = new THREE.MeshStandardMaterial({ map: wallTexture10 });
+        const wall10 = new THREE.Mesh(new THREE.BoxGeometry(20, 10, 0.5), wallMaterial10);
+        wall10.position.set(-20, 5, 0);
+        wall10.rotation.y = Math.PI / 2;
+        wall10.receiveShadow = true;
+        scene.add(wall10);
+        walls.push(wall10);
+        */
+
+        // Licht hinzufügen
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(5, 10, 5);
+        directionalLight.castShadow = true; // Licht wirft Schatten
+
+        directionalLight.shadow.mapSize.width = 4000; //2048;
+        directionalLight.shadow.mapSize.height = 4000; //2048;
+
+        // Aktiviere Weichzeichnung der Schatten
+        directionalLight.shadow.radius = 2;
+        directionalLight.shadow.camera.left = -200; // Linke Grenze der Schattenkamera
+        directionalLight.shadow.camera.right = 200; // Rechte Grenze der Schattenkamera
+        directionalLight.shadow.camera.top = 200; // Obere Grenze der Schattenkamera
+        directionalLight.shadow.camera.bottom = -200; // Untere Grenze der Schattenkamera
+        directionalLight.shadow.camera.near = 0.5; // Nahe Grenze der Schattenkamera
+        directionalLight.shadow.camera.far = 500; // Ferne Grenze der Schattenkamera
+
+        
+        scene.add(directionalLight);
+        // Kamera-Position und Steuerung
+        camera.position.set(0, 5, 5);
+
+
+        function rotateCamera90Degrees() {
+            camera.rotation.y += Math.PI / 2; // 90 Grad in Radiant
+        }
+        /*function checkCollision(newPos) {
+            let collision = false;
+
+            // Aktualisieren der Kamera-Bounding-Box
+            camera.updateMatrixWorld(); // Sicherstellen, dass die Kameramatrix aktualisiert ist
+            const cameraBox = new THREE.Box3().setFromObject(camera);
+
+            // Anpassen der Bounding-Box-Positionen basierend auf newPos
+            const newCameraBox = cameraBox.clone();
+            newCameraBox.min.add(newPos).sub(camera.position);
+            newCameraBox.max.add(newPos).sub(camera.position);
+
+            // Schleife durch die Wände und überprüfe Kollision
+            for (const wall of walls) {
+                // Aktualisieren der Wand-Bounding-Box
+                wall.updateMatrixWorld(); // Sicherstellen, dass die Wandmatrix aktualisiert ist
+                const wallBox = new THREE.Box3().setFromObject(wall);
+
+                // Überprüfe auf Kollision
+                if (newCameraBox.intersectsBox(wallBox)) {
+                    collision = true;
+                    console.log("Kollision erkannt!");
+                    //break;
+                }
+            }
+            return collision;
+        }*/
+        function checkCollision(newPos) {
+            camera.updateMatrixWorld(); // Sicherstellen, dass die Kameramatrix aktualisiert ist
+            const cameraBox = new THREE.Box3().setFromObject(camera);
+
+            // Anpassen der Bounding-Box-Positionen basierend auf newPos
+            const newCameraBox = cameraBox.clone();
+            newCameraBox.min.add(newPos).sub(camera.position);
+            newCameraBox.max.add(newPos).sub(camera.position);
+
+            // Schleife durch die Wände und überprüfe Kollision
+            for (const wall of walls) {
+                wall.updateMatrixWorld(); // Sicherstellen, dass die Wandmatrix aktualisiert ist
+                const wallBox = new THREE.Box3().setFromObject(wall);
+
+                // Überprüfe auf Kollision
+                if (newCameraBox.intersectsBox(wallBox)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        document.addEventListener('touchstart', (event) => {
+            touchStartX = event.touches[0].clientX;
+            touchStartY = event.touches[0].clientY;
+        });
+        /*document.addEventListener('mousestert', (event) => {
+            touchStartX = event.clientX;
+            touchStartY = event.clientY;
+        });*/
+
+
+        /*document.addEventListener('touchmove', (event) => {
+            const touchX = event.touches[0].clientX;
+            const touchY = event.touches[0].clientY;
+
+            const deltaX = (touchX - touchStartX) / window.innerWidth;
+            const deltaY = (touchY - touchStartY) / window.innerHeight;
+
+            const direction = new THREE.Vector3(deltaX, 0, deltaY).normalize();
+            const moveVector = direction.multiplyScalar(moveSpeed);
+
+            const newPos = camera.position.clone().add(moveVector);
+
+            // Überprüfe Kollision vor dem Bewegen der Kamera
+            if (!checkCollision(newPos)) {
+                camera.position.copy(newPos);
+            }
+
+            touchStartX = touchX;
+            touchStartY = touchY;
+        });
+        document.addEventListener('touchmove', (event) => {
+            const touchX = event.touches[0].clientX;
+            const touchY = event.touches[0].clientY;
+
+            const deltaX = (touchX - touchStartX) / window.innerWidth;
+            const deltaY = (touchY - touchStartY) / window.innerHeight;
+
+            const direction = new THREE.Vector3(deltaX, 0, deltaY).normalize();
+            const moveVector = direction.multiplyScalar(moveSpeed);
+
+            targetPos.add(moveVector); // Zielposition basierend auf der Bewegungsrichtung
+
+            touchStartX = touchX;
+            touchStartY = touchY;
+        });*/
+        // Kamera-Position und Steuerung
+        camera.position.set(0, 10, 5);
+        //camera.lookAt(0, 0, 0);
+        const moveSpeed = 0.5; // Reduzierte Geschwindigkeit
+        const interpolationFactor = 0.005; // Interpolationsfaktor für sanfte Bewegung
+
+        let targetPos = camera.position.clone();
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        const rotationSpeed = 0.002; // Reduzierte Geschwindigkeit der Drehung
+        document.addEventListener('touchmove', (event) => {
+            /*const touchX = event.touches[0].clientX;
+            const touchY = event.touches[0].clientY;
+
+            const deltaX = (touchX - touchStartX) / window.innerWidth;
+            const deltaY = (touchY - touchStartY) / window.innerHeight;
+
+            const direction = new THREE.Vector3(deltaX, 0, deltaY).normalize();
+            const moveVector = direction.multiplyScalar(moveSpeed);
+
+            targetPos.add(moveVector); // Zielposition basierend auf der Bewegungsrichtung
+
+            touchStartX = touchX;
+            touchStartY = touchY;*/
+            const touchX = event.touches[0].clientX;
+            const touchY = event.touches[0].clientY;
+
+            const deltaX = (touchX - touchStartX) / window.innerWidth;
+            const deltaY = (touchY - touchStartY) / window.innerHeight;
+
+            const direction = new THREE.Vector3(deltaX, 0, deltaY).normalize();
+            const moveVector = direction.multiplyScalar(moveSpeed);
+
+            const newPos = camera.position.clone().add(moveVector);
+            if (!checkCollision(newPos)) {
+                camera.position.copy(newPos);
+            }
+            raycaster.setFromCamera(mouse, camera);
+            //const intersects = raycaster.intersectObjects(scene.children, true);
+            const intersects = raycaster.intersectObjects(wall1, true);
+
+            if (intersects.length > 0) {
+                // Ein Objekt wurde getroffen, führe hier deine Aktion aus
+                alert('Objekt wurde geklickt!');
+            }
+
+            touchStartX = touchX;
+            touchStartY = touchY;
+        });
+        function onDocumentMouseMove(event) {
+            event.preventDefault();
+
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+
+            const intersects = raycaster.intersectObjects(chairGroup.children);
+
+            if (intersects.length > 0) {
+                const selectedObject = intersects[0].object;
+
+                // Hier kannst du festlegen, was bei der Mausbewegung passieren soll
+                selectedObject.rotation.y += 0.01; // Rotiert das ausgewählte Objekt
+            }
+        }
+
+        //document.addEventListener('mousemove', onDocumentMouseMove, false);
+
+        /*document.addEventListener('touchend', () => {
+
+        });*/
+
+
+        // Animierte Schleife für sanfte Bewegung
+        /*function animate() {
+            requestAnimationFrame(animate);
+
+            // Interpoliere die Kamera-Position sanft zur Zielposition
+            camera.position.lerp(targetPos, interpolationFactor);
+
+            // Drehung der Kamera basierend auf der Bewegungsrichtung
+            camera.lookAt(targetPos);
+
+            // Überprüfe Kollision vor dem Bewegen der Kamera
+            if (checkCollision(targetPos)) {
+                targetPos.copy(camera.position); // Kamera bleibt an der aktuellen Position bei Kollision
+            }
+
+            renderer.render(scene, camera);
+        }*/
+        function animate() {
+            requestAnimationFrame(animate);
+            // Interpoliere die Kamera-Position sanft zur Zielposition
+            //camera.position.lerp(targetPos, interpolationFactor);
+
+            // Drehung der Kamera basierend auf der Bewegungsrichtung
+            //camera.lookAt(targetPos.clone().add(new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion)));
+
+            // Überprüfe Kollision vor dem Bewegen der Kamera
+            if (checkCollision(targetPos)) {
+                targetPos.copy(camera.position); // Kamera bleibt an der aktuellen Position bei Kollision
+            }
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+
+    </script>
+</body>
+</html>
