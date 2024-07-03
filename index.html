@@ -314,7 +314,7 @@
         let Eheight = 10;
         let Ewidth = 10;
         let wallNum = "1";
-        let chairNum = "0";
+        let chairNum = 0;
         let left_richt = 0;
         let top_bottom = 5;
         let back_front = -5;
@@ -475,6 +475,7 @@
                 chaircontrols.style.display = "none";
                 tablecontrols.style.display = "none";
                 wallcontrols.style.display = "block";
+                wallgroupname = wall.name;
                 selectedElement = wall;
             });
             /*wallbutton1.addEventListener("click", () => {
@@ -614,6 +615,7 @@
                 chaircontrols.style.display = "block";
                 tablecontrols.style.display = "none";
                 wallcontrols.style.display = "none";
+                chairgroupname = chairGroup.name;
                 selectedChair = chairGroup;
             });
             selectedChair = chairGroup;
@@ -687,6 +689,7 @@
                 chaircontrols.style.display = "none";
                 tablecontrols.style.display = "block";
                 wallcontrols.style.display = "none";
+                tablegroupname = tableGroup.name;
                 selectedTable = tableGroup;
             });
             selectedTable = tableGroup;
@@ -792,6 +795,7 @@
                 tablecontrols.style.display = "none";
                 wallcontrols.style.display = "none";
                 bedcontrols.style.display = "block";
+                bedgroupname = bedGroup.name;
                 selectedBed = bedGroup;
             });
             selectedBed = bedGroup;
@@ -811,6 +815,7 @@
                     chaircontrols.style.display = "none";
                     tablecontrols.style.display = "none";
                     wallcontrols.style.display = "block";
+                    wallgroupname = wall.name;
                     selectedElement = wall;
                 });
                 bgn.remove();
@@ -835,6 +840,7 @@
                     chaircontrols.style.display = "none";
                     tablecontrols.style.display = "block";
                     wallcontrols.style.display = "none";
+                    tablegroupname = tableGroup.name;
                     selectedTable = tableGroup;
                 });
                 bgn.remove();
@@ -859,6 +865,7 @@
                     chaircontrols.style.display = "block";
                     tablecontrols.style.display = "none";
                     wallcontrols.style.display = "none";
+                    chairgroupname = chairGroup.name;
                     selectedChair = chairGroup;
                 });
                 bgn.remove();
@@ -884,6 +891,7 @@
                     tablecontrols.style.display = "none";
                     wallcontrols.style.display = "none";
                     bedcontrols.style.display = "block";
+                    bedgroupname = bedGroup.name;
                     selectedBed = bedGroup;
                 });
                 bgn.remove();
