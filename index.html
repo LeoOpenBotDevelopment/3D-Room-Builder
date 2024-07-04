@@ -1102,21 +1102,21 @@
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(ambientLight);
 
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight.position.set(5, 10, 5);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(5, 23, 5);
         directionalLight.castShadow = true; // Licht wirft Schatten
 
-        directionalLight.shadow.mapSize.width = 4000; //2048;
-        directionalLight.shadow.mapSize.height = 4000; //2048;
+        directionalLight.shadow.mapSize.width = 9000; //2048;
+        directionalLight.shadow.mapSize.height = 9000; //2048;
 
         // Aktiviere Weichzeichnung der Schatten
         directionalLight.shadow.radius = 2;
-        directionalLight.shadow.camera.left = -200; // Linke Grenze der Schattenkamera
-        directionalLight.shadow.camera.right = 200; // Rechte Grenze der Schattenkamera
-        directionalLight.shadow.camera.top = 200; // Obere Grenze der Schattenkamera
-        directionalLight.shadow.camera.bottom = -200; // Untere Grenze der Schattenkamera
+        directionalLight.shadow.camera.left = -100; // Linke Grenze der Schattenkamera
+        directionalLight.shadow.camera.right = 100; // Rechte Grenze der Schattenkamera
+        directionalLight.shadow.camera.top = 100; // Obere Grenze der Schattenkamera
+        directionalLight.shadow.camera.bottom = -100; // Untere Grenze der Schattenkamera
         directionalLight.shadow.camera.near = 0.5; // Nahe Grenze der Schattenkamera
-        directionalLight.shadow.camera.far = 500; // Ferne Grenze der Schattenkamera
+        directionalLight.shadow.camera.far = 100; // Ferne Grenze der Schattenkamera
 
 
         scene.add(directionalLight);
