@@ -128,7 +128,7 @@
             flex: 1;
             overflow-y: auto;
             height: 500px;
-            
+
         }*/
         #wall1 {
             position: absolute;
@@ -210,7 +210,15 @@
             position: absolute;
             top: 130px;
         }
-        
+        #wallcolor5{
+            position: absolute;
+            top: 170px;
+        }
+        #wallcolor6{
+            position: absolute;
+            top: 210px;
+        }
+
     </style>
 </head>
 <body>
@@ -250,6 +258,8 @@
     <img src="Bluewall.png" id="wallcolor2">
     <img src="Woodwall.png" id="wallcolor3">
     <img src="Zementwall.png" id="wallcolor4">
+    <img src="LightWoodWall.png" id="wallcolor5">
+    <img src="DarkWoodWall.png" id="wallcolor6">
     <div class="allwalls">
         <button id="wall1">wall1</button>
     </div>
@@ -265,12 +275,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         const scene = new THREE.Scene();
-        /*var light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(0, 10, 0); // Position der Lichtquelle einstellen
-        light.castShadow = true; // Schatten aktivieren
-        scene.add(light);*/
 
-        
+
         // Setup der Szene, Kamera und Renderer
         let backgroundimg1 = "Whitewall.png";
 
@@ -278,12 +284,16 @@
         let wallcolor2 = document.getElementById("wallcolor2");
         let wallcolor3 = document.getElementById("wallcolor3");
         let wallcolor4 = document.getElementById("wallcolor4");
+        let wallcolor5 = document.getElementById("wallcolor5");
+        let wallcolor6 = document.getElementById("wallcolor6");
 
         wallcolor1.addEventListener("click", function() {
             wallcolor1.style.border = "2px solid red";
             wallcolor2.style.border = "2px solid black";
             wallcolor3.style.border = "2px solid black";
             wallcolor4.style.border = "2px solid black";
+            wallcolor5.style.border = "2px solid black";
+            wallcolor6.style.border = "2px solid black";
             backgroundimg1 = "Whitewall.png";
         });
 
@@ -292,6 +302,8 @@
             wallcolor2.style.border = "2px solid red";
             wallcolor3.style.border = "2px solid black";
             wallcolor4.style.border = "2px solid black";
+            wallcolor5.style.border = "2px solid black";
+            wallcolor6.style.border = "2px solid black";
             backgroundimg1 = "Bluewall.png";
         });
 
@@ -300,17 +312,40 @@
             wallcolor2.style.border = "2px solid black";
             wallcolor3.style.border = "2px solid red";
             wallcolor4.style.border = "2px solid black";
+            wallcolor5.style.border = "2px solid black";
+            wallcolor6.style.border = "2px solid black";
             backgroundimg1 = "Woodwall.png";
         });
 
         wallcolor4.addEventListener("click", function() {
-            wallcolor1.style.border = "2px solid red";
+            wallcolor1.style.border = "2px solid black";
             wallcolor2.style.border = "2px solid black";
             wallcolor3.style.border = "2px solid black";
             wallcolor4.style.border = "2px solid red";
+            wallcolor5.style.border = "2px solid black";
+            wallcolor6.style.border = "2px solid black";
             backgroundimg1 = "Zementwall.png";
         });
-        
+
+        wallcolor5.addEventListener("click", function() {
+            wallcolor1.style.border = "2px solid black";
+            wallcolor2.style.border = "2px solid black";
+            wallcolor3.style.border = "2px solid black";
+            wallcolor4.style.border = "2px solid black";
+            wallcolor5.style.border = "2px solid red";
+            wallcolor6.style.border = "2px solid black";
+            backgroundimg1 = "LightWoodWall.png";
+        });
+        wallcolor6.addEventListener("click", function() {
+            wallcolor1.style.border = "2px solid black";
+            wallcolor2.style.border = "2px solid black";
+            wallcolor3.style.border = "2px solid black";
+            wallcolor4.style.border = "2px solid black";
+            wallcolor5.style.border = "2px solid black";
+            wallcolor6.style.border = "2px solid red";
+            backgroundimg1 = "DarkWoodWall.png";
+        });
+
         let Eheight = 10;
         let Ewidth = 10;
         let wallNum = "1";
@@ -346,6 +381,7 @@
         let tablecontrols = document.querySelector(".tablecontrols");
         let bedcontrols = document.querySelector(".bedcontrols");
 
+        const textureLoader = new THREE.TextureLoader();
         //const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -355,12 +391,20 @@
         document.body.appendChild(renderer.domElement);
 
         const floorGeometry = new THREE.PlaneGeometry(100, 100);
-        const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x808080, side: THREE.DoubleSide });
+        //const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x808080, side: THREE.DoubleSide });
+        const floorTexture = textureLoader.load("Zementwall.png", (texture) => {
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            texture.repeat.set(1, 1);
+        });
+        const floorMaterial = new THREE.MeshStandardMaterial({ map: floorTexture });
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
         floor.rotation.x = -Math.PI / 2;
         floor.receiveShadow = true; // Boden empfängt Schatten
         //floor.castShadow = true;
         scene.add(floor);
+
+
 
         /*light.shadow.mapSize.width = 1024;
         light.shadow.mapSize.height = 1024;
@@ -371,75 +415,17 @@
         // Wände mit Schatten und Tiefe
         const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xbbbcba, side: THREE.DoubleSide });
 
-        const textureLoader = new THREE.TextureLoader();
 
         const walls = [];
 
         // -|+
 
         // || |_| {_}[1]
-        //const wallTexture1 = textureLoader.load('Ay_ilurp_processed.jpg');
-        /*let wallTexture1 = textureLoader.load(backgroundimg1, (texture) => {
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
-            texture.repeat.set(1, 1);
-        });
-        let wallMaterial1 = new THREE.MeshStandardMaterial({ map: wallTexture1 });
-        let wall1 = new THREE.Mesh(new THREE.BoxGeometry(Ewidth, Eheight, 0.5), wallMaterial1);
-        wall1.position.set(left_richt, top_bottom, back_front);
-        wall1.receiveShadow = true;
-        scene.add(wall1);
-        walls.push(wall1);
-        function allwalls() {
-            wallTexture1 = textureLoader.load(backgroundimg1, (texture) => {
-                texture.wrapS = THREE.RepeatWrapping;
-                texture.wrapT = THREE.RepeatWrapping;
-                // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
-                texture.repeat.set(1, 1);
-            });
-            wallMaterial1 = new THREE.MeshStandardMaterial({ map: wallTexture1 });
-            wall1 = new THREE.Mesh(new THREE.BoxGeometry(Ewidth, Eheight, 0.5), wallMaterial1);
-            wall1.position.set(left_richt, top_bottom, back_front);
-            wall1.receiveShadow = true;
-            scene.add(wall1);
-            walls.push(wall1);
-        }*/
         let wall1; // Variable für die Wand
         let selectedElement = null;
         let selectedChair = null;
         let topm = 250;
         let wall1element;
-        /*function createWall() {
-            const wallTexture = textureLoader.load(backgroundimg1, (texture) => {
-                texture.wrapS = THREE.RepeatWrapping;
-                texture.wrapT = THREE.RepeatWrapping;
-                texture.repeat.set(1, 1);
-            });
-
-            const wallMaterial = new THREE.MeshStandardMaterial({ map: wallTexture });
-            const wall = new THREE.Mesh(new THREE.BoxGeometry(Ewidth, Eheight, 0.5), wallMaterial);
-            wall.position.set(left_richt, top_bottom, back_front);
-            wall.receiveShadow = true;
-            wall.castShadow = true;
-            wallNum = parseInt(wallNum) + 1;
-            wall.name = "wall" + wallNum;
-            scene.add(wall);
-            walls.push(wall);
-            // create element button
-            const button = document.createElement("button");
-            button.textContent = wall.name;
-            button.style.position = "absolute";
-            button.style.top = `${topm + 60}px`;
-            let body = document.querySelector(".allwalls");
-            button.id = wall.name;
-            body.appendChild(button);
-            createdbutton = document.getElementById(wall.name);
-            createdbutton.addEventListner("click", () => {
-                selectedElement = wall;
-            });
-            selectedElement = wall;
-        }*/
         let wallgroupname = "wall1";
         function createWall() {
             const wallTexture = textureLoader.load(backgroundimg1, (texture) => {
@@ -530,7 +516,7 @@
                 wall.material.dispose();
             }
         }
-        
+
         function allwalls() {
             // Lade die Textur und aktualisiere die Wandmaterialien
             const wallTexture1 = textureLoader.load(backgroundimg1, (texture) => {
@@ -546,7 +532,6 @@
                 selectedElement.position.set(left_richt, top_bottom, back_front);
                 selectedElement.castShadow = true;
                 selectedElement.scale.x = scaleX;
-                
             } else {
                 // Erstelle die Wand nur einmal
                 const wallMaterial1 = new THREE.MeshStandardMaterial({ map: wallTexture1 });
@@ -562,22 +547,55 @@
         }
         const chairs = [];
 
-        function moveSelectedChair() {
+        /*function moveSelectedChair() {
             let sizeRangex = parseFloat(sizeRange4.value);
             let sizeRangey = parseFloat(sizeRange5.value);
             let sizeRangez = parseFloat(sizeRange6.value);
             if (selectedChair) {
                 selectedChair.position.set(sizeRangex, sizeRangey, sizeRangez);
             }
+        }*/
+        function moveSelectedChair() {
+            let sizeRangex = parseFloat(sizeRange4.value);
+            let sizeRangey = parseFloat(sizeRange5.value);
+            let sizeRangez = parseFloat(sizeRange6.value);
+
+            const seatTexture1 = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
+
+            if (selectedChair) {
+                selectedChair.position.set(sizeRangex, sizeRangey, sizeRangez);
+
+                selectedChair.traverse((child) => {
+                    if (child instanceof THREE.Mesh) {
+                        child.material.map = seatTexture1;
+                        child.material.needsUpdate = true;
+                        child.castShadow = true;
+                    }
+                });
+            }
         }
+
 
         let chairgroupname;
         function createChair() {
             const chairGroup = new THREE.Group();
 
             // Sitzfläche
+
+            // Tischplatte
             const seatGeometry = new THREE.BoxGeometry(2, 0.5, 2);
-            const seatMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+            const seatTexture = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
+            const seatMaterial = new THREE.MeshStandardMaterial({ map: seatTexture });
+            //const seatGeometry = new THREE.BoxGeometry(2, 0.5, 2);
+            //const seatMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
             const seat = new THREE.Mesh(seatGeometry, seatMaterial);
             seat.position.set(0, 1, 0);
             seat.castShadow = true;
@@ -649,8 +667,20 @@
             let sizeRangex = parseFloat(sizeRange7.value);
             let sizeRangey = parseFloat(sizeRange8.value);
             let sizeRangez = parseFloat(sizeRange9.value);
+            const tableTexture1 = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
             if (selectedTable) {
                 selectedTable.position.set(sizeRangex, sizeRangey, sizeRangez);
+                selectedTable.traverse((child) => {
+                    if (child instanceof THREE.Mesh) {
+                        child.material.map = tableTexture1;
+                        child.material.needsUpdate = true;
+                        child.castShadow = true;
+                    }
+                });
             }
         }
 
@@ -660,7 +690,13 @@
 
             // Tischplatte
             const tabletopGeometry = new THREE.BoxGeometry(4, 0.2, 2);
-            const tabletopMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+            const tableTexture = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
+            const tabletopMaterial = new THREE.MeshStandardMaterial({ map: tableTexture });
+            //const tabletopMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
             const tabletop = new THREE.Mesh(tabletopGeometry, tabletopMaterial);
             tabletop.position.set(0, 2, 0);
             tabletop.castShadow = true;
@@ -724,8 +760,22 @@
             let sizeRangex = parseFloat(sizeRange10.value);
             let sizeRangey = parseFloat(sizeRange11.value);
             let sizeRangez = parseFloat(sizeRange12.value);
+            const bedTexture1 = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
             if (selectedBed) {
                 selectedBed.position.set(sizeRangex, sizeRangey, sizeRangez);
+                selectedBed.traverse((child) => {
+                    if (child instanceof THREE.Mesh) {
+                        if (child instanceof THREE.Mesh && child.name !== "mattress") {
+                            child.material.map = bedTexture1;
+                            child.material.needsUpdate = true;
+                            child.castShadow = true;
+                        }
+                    }
+                });
             }
         }
 
@@ -750,7 +800,13 @@
 
             // Bettgestell
             const frameGeometry = new THREE.BoxGeometry(4.5, 0.5, 4.0);
-            const frameMaterial = new THREE.MeshStandardMaterial({ color: 0x6e501e });
+            const frameTexture = textureLoader.load(backgroundimg1, (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(1, 1);
+            });
+            const frameMaterial = new THREE.MeshStandardMaterial({ map: frameTexture });
+            //const frameMaterial = new THREE.MeshStandardMaterial({ color: 0x6e501e });
             const frame = new THREE.Mesh(frameGeometry, frameMaterial);
             frame.position.set(0, 0.75, 0);
             frame.castShadow = true;
@@ -769,6 +825,7 @@
             const mattress = new THREE.Mesh(mattressGeometry, mattressMaterial);
             mattress.position.set(0, 1.1, 0);
             mattress.castShadow = true;
+            mattress.name = "mattress";
             bedGroup.add(mattress);
 
             // Beine
@@ -902,7 +959,7 @@
                     selectedBed = bedGroup;
                 });
                 bgn.remove();
-                
+
 
                 // Optional: Speicherbereinigungen vornehmen
                 /*selectedBed.geometry.dispose();
@@ -1040,172 +1097,6 @@
             bedcontrols.style.display = "none";
             allwalls();
         });
-        //const chairGroup = new THREE.Group();
-
-        // Sitzfläche
-        /*const seatGeometry = new THREE.BoxGeometry(2, 0.5, 2);
-        const seatMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
-        const seat = new THREE.Mesh(seatGeometry, seatMaterial);
-        seat.position.set(0, 1, 0);
-        seat.castShadow = true;
-        chairGroup.add(seat);
-
-        // Rückenlehne
-        const backrestGeometry = new THREE.BoxGeometry(2, 2, 0.5);
-        const backrest = new THREE.Mesh(backrestGeometry, seatMaterial);
-        backrest.position.set(0, 2.25, -0.75);
-        backrest.castShadow = true;
-        chairGroup.add(backrest);
-
-        // Beine
-        const legGeometry = new THREE.BoxGeometry(0.2, 1, 0.2);
-        for (let i = -1; i <= 1; i += 2) {
-            for (let j = -1; j <= 1; j += 2) {
-                const leg = new THREE.Mesh(legGeometry, seatMaterial);
-                leg.position.set(i * 0.8, 0.5, j * 0.8);
-                leg.castShadow = true;
-                chairGroup.add(leg);
-            }
-        }
-        scene.add(chairGroup);*/
-
-        /*// || |_| | {|}[5]
-        const wallTexture2 = textureLoader.load(backgroundimg2, (texture) => {
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
-            texture.repeat.set(1, 1);
-        });
-        const wallMaterial2 = new THREE.MeshStandardMaterial({ map: wallTexture2 });
-        const wall2 = new THREE.Mesh(new THREE.BoxGeometry(20, 10, 0.5), wallMaterial2);
-        wall2.position.set(10, 5, 0);
-        wall2.rotation.y = Math.PI / 2;
-        wall2.receiveShadow = true;
-        scene.add(wall2);
-        walls.push(wall2);
-
-
-        // || |_| {|}[2]
-        const wallTexture3 = textureLoader.load(backgroundimg3, (texture) => {
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
-            texture.repeat.set(1, 1);
-        });
-        const wallMaterial3 = new THREE.MeshStandardMaterial({ map: wallTexture3 });
-        const wall3 = new THREE.Mesh(new THREE.BoxGeometry(20, 10, 0.5), wallMaterial3);
-        wall3.position.set(-10, 5, 0);
-        wall3.rotation.y = Math.PI / 2;
-        wall3.receiveShadow = true;
-        scene.add(wall3);
-        walls.push(wall3);
-
-        // ||- |_| {-}
-        const wallTexture4 = textureLoader.load(backgroundimg4, (texture) => {
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
-            texture.repeat.set(1, 1);
-        });
-        const wallMaterial4 = new THREE.MeshStandardMaterial({ map: wallTexture4 });
-        const wall4 = new THREE.Mesh(new THREE.BoxGeometry(5, 10, 0.5), wallMaterial4);
-        wall4.position.set(-7.5, 5, 5);
-        wall4.rotation.y = Math.PI;
-        wall4.receiveShadow = true;
-        scene.add(wall4);
-        walls.push(wall4);
-
-        // || |_| -| {-}
-        const wallTexture5 = textureLoader.load(backgroundimg5, (texture) => {
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
-            texture.repeat.set(1, 1);
-        });
-        const wallMaterial5 = new THREE.MeshStandardMaterial({ map: wallTexture5 });
-        const wall5 = new THREE.Mesh(new THREE.BoxGeometry(5, 10, 0.5), wallMaterial5);
-        wall5.position.set(7.5, 5, 0);
-        wall5.rotation.y = Math.PI;
-        wall5.receiveShadow = true;
-        scene.add(wall5);
-        walls.push(wall5);
-
-        // || |_| -|- {-}[2]
-        const wallTexture6 = textureLoader.load(backgroundimg6, (texture) => {
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
-            texture.repeat.set(1, 1);
-        });
-        const wallMaterial6 = new THREE.MeshStandardMaterial({ map: wallTexture6 });
-        const wall6 = new THREE.Mesh(new THREE.BoxGeometry(10, 10, 0.5), wallMaterial6);
-        wall6.position.set(15, 5, 0);
-        wall6.rotation.y = Math.PI;
-        wall6.receiveShadow = true;
-        scene.add(wall6);
-        walls.push(wall6);
-
-
-        // || |_| {|}[4]
-        const wallTexture7 = textureLoader.load(backgroundimg7, (texture) => {
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
-            texture.repeat.set(1, 1);
-        });
-        const wallMaterial7 = new THREE.MeshStandardMaterial({ map: wallTexture7 });
-        const wall7 = new THREE.Mesh(new THREE.BoxGeometry(10, 10, 0.5), wallMaterial7);
-        wall7.position.set(2.5, 5, -10);
-        wall7.rotation.y = Math.PI / 2;
-        wall7.receiveShadow = true;
-        scene.add(wall7);
-        walls.push(wall7);
-
-
-        // || |_| {|}[3]
-        const wallTexture8 = textureLoader.load(backgroundimg8, (texture) => {
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
-            texture.repeat.set(1, 1);
-        });
-        const wallMaterial8 = new THREE.MeshStandardMaterial({ map: wallTexture8 });
-        const wall8 = new THREE.Mesh(new THREE.BoxGeometry(10, 10, 0.5), wallMaterial8);
-        wall8.position.set(-2.5, 5, -10);
-        wall8.rotation.y = Math.PI / 2;
-        wall8.receiveShadow = true;
-        scene.add(wall8);
-        walls.push(wall8);
-
-        // |^| {^}
-        const wallTexture9 = textureLoader.load(backgroundimg9, (texture) => {
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
-            texture.repeat.set(1, 1);
-        });
-        const wallMaterial9 = new THREE.MeshStandardMaterial({ map: wallTexture9 });
-        const wall9 = new THREE.Mesh(new THREE.BoxGeometry(40, 10, 0.5), wallMaterial9);
-        wall9.position.set(0, 5, -15);
-        wall9.receiveShadow = true;
-        scene.add(wall9);
-        walls.push(wall9);
-
-        // | | |_| {|}[1]
-        const wallTexture10 = textureLoader.load(backgroundimg10, (texture) => {
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            // Die Wiederholungsrate wird angepasst, um ein "cover"-Verhalten zu erreichen
-            texture.repeat.set(1, 1);
-        });
-        const wallMaterial10 = new THREE.MeshStandardMaterial({ map: wallTexture10 });
-        const wall10 = new THREE.Mesh(new THREE.BoxGeometry(20, 10, 0.5), wallMaterial10);
-        wall10.position.set(-20, 5, 0);
-        wall10.rotation.y = Math.PI / 2;
-        wall10.receiveShadow = true;
-        scene.add(wall10);
-        walls.push(wall10);
-        */
 
         // Licht hinzufügen
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -1227,7 +1118,7 @@
         directionalLight.shadow.camera.near = 0.5; // Nahe Grenze der Schattenkamera
         directionalLight.shadow.camera.far = 500; // Ferne Grenze der Schattenkamera
 
-        
+
         scene.add(directionalLight);
         // Kamera-Position und Steuerung
         camera.position.set(0, 5, 5);
@@ -1345,19 +1236,6 @@
 
         const rotationSpeed = 0.002; // Reduzierte Geschwindigkeit der Drehung
         document.addEventListener('touchmove', (event) => {
-            /*const touchX = event.touches[0].clientX;
-            const touchY = event.touches[0].clientY;
-
-            const deltaX = (touchX - touchStartX) / window.innerWidth;
-            const deltaY = (touchY - touchStartY) / window.innerHeight;
-
-            const direction = new THREE.Vector3(deltaX, 0, deltaY).normalize();
-            const moveVector = direction.multiplyScalar(moveSpeed);
-
-            targetPos.add(moveVector); // Zielposition basierend auf der Bewegungsrichtung
-
-            touchStartX = touchX;
-            touchStartY = touchY;*/
             const touchX = event.touches[0].clientX;
             const touchY = event.touches[0].clientY;
 
@@ -1401,30 +1279,6 @@
             }
         }
 
-        //document.addEventListener('mousemove', onDocumentMouseMove, false);
-
-        /*document.addEventListener('touchend', () => {
-
-        });*/
-
-
-        // Animierte Schleife für sanfte Bewegung
-        /*function animate() {
-            requestAnimationFrame(animate);
-
-            // Interpoliere die Kamera-Position sanft zur Zielposition
-            camera.position.lerp(targetPos, interpolationFactor);
-
-            // Drehung der Kamera basierend auf der Bewegungsrichtung
-            camera.lookAt(targetPos);
-
-            // Überprüfe Kollision vor dem Bewegen der Kamera
-            if (checkCollision(targetPos)) {
-                targetPos.copy(camera.position); // Kamera bleibt an der aktuellen Position bei Kollision
-            }
-
-            renderer.render(scene, camera);
-        }*/
         function animate() {
             requestAnimationFrame(animate);
             // Interpoliere die Kamera-Position sanft zur Zielposition
