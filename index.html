@@ -140,7 +140,7 @@
 
         }*/
         /*#wall1 {
-            
+
         }*/
         /*#chair1 {
             position: absolute;
@@ -225,6 +225,14 @@
         #wallcolor6{
             position: absolute;
             top: 210px;
+        }
+        #uploadedImage{
+            position: absolute;
+            top: 250px;
+        }
+        #addImage{
+            position: absolute;
+            top: 290px;
         }
         .allwalls{
             display: none;
@@ -362,9 +370,16 @@
           transform: rotate(90deg);
           opacity: 1;
         }
+        #rotationRange{
+            position: absolute;
+            left: 35%;
+            bottom: 5px;
+            width: 350px;
+        }
     </style>
 </head>
 <body>
+    <input type="range" id="rotationRange" min="0" max="360" value="0">
     <div class="wallcontrols">
       <input type="range" min="-50" max="50" value="0" id="sizeRange1">
       <input type="range" min="0" max="10" value="1" id="sizeRange2">
@@ -404,6 +419,11 @@
     <img src="Zementwall.png" id="wallcolor4">
     <img src="LightWoodWall.png" id="wallcolor5">
     <img src="DarkWoodWall.png" id="wallcolor6">
+    <input type="file" id="imageUpload" name="imageUpload" accept="image/*" style="display: none;"/>
+    <div class="pics">
+        <label for="imageUpload"><img id="uploadedImage" src="" alt="Hochgeladenes Bild"></label>
+    </div>
+    <label for="imageUpload"><img id="addImage" src="PlusImg.png" alt="Hochgeladenes Bild"></label>
     <div class="allwalls">
         <div class="cross" id="clossop1"></div>
         <button id="wallop" class="wallop" onclick="op1click()">walls</button>
@@ -456,6 +476,75 @@
         let op3 = document.querySelectorAll(".tableop");
         let op4 = document.querySelectorAll(".bedop");
         let cross = document.querySelectorAll(".cross");
+        let imageUpload = document.getElementById("imageUpload");
+        let iuimage = "";
+        let imgElement = document.getElementById('uploadedImage');
+        let addImage = document.getElementById("addImage");
+        let pics = document.querySelector(".pics");
+        let curentidnum = 1;
+        let curenttop = 250;
+        let uploadedImage = document.getElementById("uploadedImage");
+        let imageelementlist = [uploadedImage];
+        let imagelimit = 12;
+        let curentimages = 1;
+        addImage.addEventListener("click", () => {
+            if (curentimages <= imagelimit){
+                let newlabel = document.createElement("label");
+                /* newlabel target */
+                newlabel.setAttribute("for", "imageUpload");
+                let newelement = document.createElement("img");
+                curentimages += 1;
+                const idnum = "uploadedImage" + (curentidnum + 1);
+                curentidnum += 1;
+                newelement.id = idnum;
+                imgElement = newelement;
+                newelement.style.position = "absolute";
+                newelement.style.top = (curenttop + 40) + "px";
+                curenttop += 40;
+                pics.appendChild(newlabel);
+                newlabel.appendChild(newelement);
+                addImage.style.position = "absolute";
+                addImage.style.top = (curenttop + 40) + "px";
+                imageelementlist.push(newelement);
+                document.getElementById(newelement.id).addEventListener("click", () => {
+                    imgElement = document.getElementById(newelement.id);
+                    wallcolor1.style.border = "2px solid black";
+                    wallcolor2.style.border = "2px solid black";
+                    wallcolor3.style.border = "2px solid black";
+                    wallcolor4.style.border = "2px solid black";
+                    wallcolor5.style.border = "2px solid black";
+                    wallcolor6.style.border = "2px solid black";
+                    imageelementlist.forEach((element) => {
+                        element.style.border = "2px solid black";
+                    });
+                    document.getElementById(newelement.id).style.border = "2px solid red";
+                    backgroundimg1 = document.getElementById(newelement.id).src;
+                });
+            }else {
+                alert("You can only upload 12 images");
+            }
+        });
+        document.getElementById('imageUpload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    // Bild in einer Variablen speichern
+                    const imageData = e.target.result;
+
+                    // Bild anzeigen
+                    imgElement.src = imageData;
+                    iuimage = imageData;
+                    imgElement.style.display = 'block';
+
+                    console.log("Bild erfolgreich geladen:", imageData);
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
 
         cross.forEach(element => {
             element.addEventListener("click", () => {
@@ -590,6 +679,10 @@
             wallcolor4.style.border = "2px solid black";
             wallcolor5.style.border = "2px solid black";
             wallcolor6.style.border = "2px solid black";
+            uploadedImage.style.border = "2px solid black";
+            imageelementlist.forEach((element) => {
+                element.style.border = "2px solid black";
+            });
             backgroundimg1 = "Whitewall.png";
         });
 
@@ -600,6 +693,10 @@
             wallcolor4.style.border = "2px solid black";
             wallcolor5.style.border = "2px solid black";
             wallcolor6.style.border = "2px solid black";
+            uploadedImage.style.border = "2px solid black";
+            imageelementlist.forEach((element) => {
+                element.style.border = "2px solid black";
+            });
             backgroundimg1 = "Bluewall.png";
         });
 
@@ -610,6 +707,10 @@
             wallcolor4.style.border = "2px solid black";
             wallcolor5.style.border = "2px solid black";
             wallcolor6.style.border = "2px solid black";
+            uploadedImage.style.border = "2px solid black";
+            imageelementlist.forEach((element) => {
+                element.style.border = "2px solid black";
+            });
             backgroundimg1 = "Woodwall.png";
         });
 
@@ -620,6 +721,10 @@
             wallcolor4.style.border = "2px solid red";
             wallcolor5.style.border = "2px solid black";
             wallcolor6.style.border = "2px solid black";
+            uploadedImage.style.border = "2px solid black";
+            imageelementlist.forEach((element) => {
+                element.style.border = "2px solid black";
+            });
             backgroundimg1 = "Zementwall.png";
         });
 
@@ -630,6 +735,10 @@
             wallcolor4.style.border = "2px solid black";
             wallcolor5.style.border = "2px solid red";
             wallcolor6.style.border = "2px solid black";
+            uploadedImage.style.border = "2px solid black";
+            imageelementlist.forEach((element) => {
+                element.style.border = "2px solid black";
+            });
             backgroundimg1 = "LightWoodWall.png";
         });
         wallcolor6.addEventListener("click", function() {
@@ -639,7 +748,25 @@
             wallcolor4.style.border = "2px solid black";
             wallcolor5.style.border = "2px solid black";
             wallcolor6.style.border = "2px solid red";
+            uploadedImage.style.border = "2px solid black";
+            imageelementlist.forEach((element) => {
+                element.style.border = "2px solid black";
+            });
             backgroundimg1 = "DarkWoodWall.png";
+        });
+        uploadedImage.addEventListener("click", function() {
+            imgElement = uploadedImage;
+            wallcolor1.style.border = "2px solid black";
+            wallcolor2.style.border = "2px solid black";
+            wallcolor3.style.border = "2px solid black";
+            wallcolor4.style.border = "2px solid black";
+            wallcolor5.style.border = "2px solid black";
+            wallcolor6.style.border = "2px solid black";
+            uploadedImage.style.border = "2px solid red";
+            imageelementlist.forEach((element) => {
+                element.style.border = "2px solid black";
+            });
+            backgroundimg1 = uploadedImage.src;
         });
 
         let Eheight = 10;
@@ -1565,7 +1692,7 @@
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-            raycaster.setFromCamera(mouse, camera);
+            //raycaster.setFromCamera(mouse, camera);
 
             const intersects = raycaster.intersectObjects(chairGroup.children);
 
@@ -1576,6 +1703,7 @@
                 selectedObject.rotation.y += 0.01; // Rotiert das ausgewählte Objekt
             }
         }
+        //document.addEventListener('mousemove', onDocumentMouseMove);
 
         function animate() {
             requestAnimationFrame(animate);
@@ -1591,7 +1719,15 @@
             }
             renderer.render(scene, camera);
         }
-
+        function camara_look_left() {
+            // camara face left
+            camera.rotation.y += Math.PI / 2; // 90 Grad nach links
+            
+        }
+        document.getElementById('rotationRange').addEventListener('input', function(event) {
+            const rotationDegree = event.target.value;
+            camera.rotation.y = THREE.Math.degToRad(rotationDegree); // Grad in Bogenmaß umwandeln
+        });
         animate();
 
 
